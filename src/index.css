@@ -1,19 +1,21 @@
 @import "tailwindcss";
 
-body {
-  margin: 8px;
-  color: #000;
-  font-family: serif;
-}
-
-h1 {
-  margin-block: 0.67em;
-  font-size: 2em;
-  font-weight: bold;
-}
-
-ul {
+html,
+body,
+#root {
   margin: 0;
-  padding: 0;
-  list-style: none;
+  height: 100%;
+}
+
+body {
+  color: #1c1917;
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
 }

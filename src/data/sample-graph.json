@@ -1,0 +1,132 @@
+{
+  "version": 1,
+  "coordinateSpace": {
+    "width": 4000,
+    "height": 3910,
+    "unit": "map-pixels",
+    "note": "x/y align to official McCormick Tech PNGs (~4000×3910). Display images in public/floor-plans/ are half-res (~2000px); editor scales clicks to this frame."
+  },
+  "floors": [
+    {
+      "id": "basement",
+      "label": "Basement",
+      "imagePath": "/floor-plans/basement.png",
+      "mapWidth": 4000,
+      "mapHeight": 3910
+    },
+    {
+      "id": "ground",
+      "label": "Ground",
+      "imagePath": "/floor-plans/ground.png",
+      "mapWidth": 4000,
+      "mapHeight": 3910
+    },
+    {
+      "id": "first",
+      "label": "First",
+      "imagePath": "/floor-plans/first.png",
+      "mapWidth": 4000,
+      "mapHeight": 3910
+    },
+    {
+      "id": "second",
+      "label": "Second",
+      "imagePath": "/floor-plans/second.png",
+      "mapWidth": 4000,
+      "mapHeight": 3910
+    },
+    {
+      "id": "third",
+      "label": "Third",
+      "imagePath": "/floor-plans/third.png",
+      "mapWidth": 4000,
+      "mapHeight": 3910
+    },
+    {
+      "id": "fourth",
+      "label": "Fourth",
+      "imagePath": "/floor-plans/fourth.png",
+      "mapWidth": 4000,
+      "mapHeight": 3910
+    }
+  ],
+  "nodes": [
+    {
+      "id": "g-ent-main",
+      "type": "entrance",
+      "floor": "ground",
+      "x": 1980,
+      "y": 3420,
+      "label": "Main entrance"
+    },
+    {
+      "id": "g-junc-1",
+      "type": "junction",
+      "floor": "ground",
+      "x": 1980,
+      "y": 2800,
+      "label": "Lobby junction"
+    },
+    {
+      "id": "g-corr-1",
+      "type": "corridor",
+      "floor": "ground",
+      "x": 1600,
+      "y": 2600,
+      "label": "W corridor"
+    },
+    {
+      "id": "g-room-demo",
+      "type": "room",
+      "floor": "ground",
+      "x": 1450,
+      "y": 2450,
+      "label": "AG52"
+    },
+    {
+      "id": "g-stair-a",
+      "type": "stair",
+      "floor": "ground",
+      "x": 2200,
+      "y": 2700,
+      "label": "Stair A",
+      "connectorGroup": "stair-a"
+    },
+    {
+      "id": "g-elev-a",
+      "type": "elevator",
+      "floor": "ground",
+      "x": 2350,
+      "y": 2680,
+      "label": "Elevator A",
+      "connectorGroup": "elev-a"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "g-ent-main",
+      "to": "g-junc-1"
+    },
+    {
+      "id": "e2",
+      "from": "g-junc-1",
+      "to": "g-corr-1"
+    },
+    {
+      "id": "e3",
+      "from": "g-corr-1",
+      "to": "g-room-demo"
+    },
+    {
+      "id": "e4",
+      "from": "g-junc-1",
+      "to": "g-stair-a"
+    },
+    {
+      "id": "e5",
+      "from": "g-junc-1",
+      "to": "g-elev-a"
+    }
+  ]
+}

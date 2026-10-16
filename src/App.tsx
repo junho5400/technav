@@ -1,9 +1,5 @@
-import './App.css';
+import { MapEditor } from './components/map/MapEditor';
 
-const App = () => (
-  <main>
-    <h1>A starter page</h1>
-  </main>
-);
+const App = () => <MapEditor />;
 
 export default App;
