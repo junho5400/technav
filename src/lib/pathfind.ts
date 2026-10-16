@@ -13,20 +13,67 @@ function edgeWeight(
   from: GraphNode,
   to: GraphNode,
 ): number {
-  if (typeof edge.weight === 'number') return edge.weight;
   const dx = from.x - to.x;
   const dy = from.y - to.y;
-  let w = Math.hypot(dx, dy);
+  // Explicit edge.weight is an additive override (e.g. vertical cost), not a replacement,
+  // so co-located stair landings cannot become zero-cost teleports.
+  let w =
+    typeof edge.weight === 'number' && edge.multiFloor
+      ? edge.weight
+      : Math.hypot(dx, dy);
+
   if (from.floor !== to.floor || edge.multiFloor) {
-    // Prefer elevators slightly over stairs for same connector distance
+    // Strong penalty so same-floor routes never detour via another floor.
     const verticalPenalty =
-      from.type === 'elevator' || to.type === 'elevator' ? 80 : 120;
+      from.type === 'elevator' || to.type === 'elevator' ? 2500 : 3200;
     w += verticalPenalty;
   }
   return w;
 }
 
-/** Undirected Dijkstra over the building graph. */
+/** Binary-heap min-priority queue for Dijkstra. */
+class MinHeap {
+  private data: { id: string; d: number }[] = [];
+
+  push(id: string, d: number) {
+    const a = this.data;
+    a.push({ id, d });
+    let i = a.length - 1;
+    while (i > 0) {
+      const p = (i - 1) >> 1;
+      if (a[p].d <= a[i].d) break;
+      const t = a[p];
+      a[p] = a[i];
+      a[i] = t;
+      i = p;
+    }
+  }
+
+  pop(): { id: string; d: number } | undefined {
+    const a = this.data;
+    if (a.length === 0) return undefined;
+    const top = a[0];
+    const last = a.pop()!;
+    if (a.length === 0) return top;
+    a[0] = last;
+    let i = 0;
+    for (;;) {
+      const l = i * 2 + 1;
+      const r = l + 1;
+      let m = i;
+      if (l < a.length && a[l].d < a[m].d) m = l;
+      if (r < a.length && a[r].d < a[m].d) m = r;
+      if (m === i) break;
+      const t = a[m];
+      a[m] = a[i];
+      a[i] = t;
+      i = m;
+    }
+    return top;
+  }
+}
+
+/** Undirected Dijkstra over the building graph (binary heap). */
 export function findShortestPath(
   graph: BuildingGraph,
   fromId: string,
@@ -53,22 +100,19 @@ export function findShortestPath(
   const dist = new Map<string, number>();
   const prev = new Map<string, { nodeId: string; edge: GraphEdge }>();
   const visited = new Set<string>();
+  const heap = new MinHeap();
 
-  for (const n of graph.nodes) dist.set(n.id, Infinity);
   dist.set(fromId, 0);
+  heap.push(fromId, 0);
 
   while (true) {
-    let u: string | null = null;
-    let best = Infinity;
-    for (const [id, d] of dist) {
-      if (!visited.has(id) && d < best) {
-        best = d;
-        u = id;
-      }
-    }
-    if (u === null || best === Infinity) break;
-    if (u === toId) break;
+    const next = heap.pop();
+    if (!next) break;
+    const { id: u, d: best } = next;
+    if (visited.has(u)) continue;
+    if (best !== (dist.get(u) ?? Infinity)) continue;
     visited.add(u);
+    if (u === toId) break;
 
     const fromNode = nodeById.get(u)!;
     for (const { edge, other } of adj.get(u) ?? []) {
@@ -78,6 +122,7 @@ export function findShortestPath(
       if (alt < (dist.get(other) ?? Infinity)) {
         dist.set(other, alt);
         prev.set(other, { nodeId: u, edge });
+        heap.push(other, alt);
       }
     }
   }

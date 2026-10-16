@@ -2,8 +2,6 @@
 
 Indoor navigator for Northwestern’s Technological Institute (Tech), on the official McCormick floor plans.
 
-Stack: React + TypeScript + Vite + Tailwind ([criesbeck/react-start](https://github.com/criesbeck/react-start) baseline).
-
 ## Setup
 
 ```bash
@@ -14,13 +12,16 @@ npm run dev
 
 Open the URL Vite prints (usually http://localhost:5173).
 
-## What you get
+## Try
 
-- **From / To** room lookup (e.g. `Main Entrance` → `AG76`, or `AG76` → `A136` across floors)
-- Official floor PNG with a **red route**
-- Step-by-step directions (advance with Previous / Next)
+- `Main Entrance` → `AG76` / `NG43` / `MG76` (ground)
+- `AG76` → `A136` (cross-floor)
 
-Graph data: `src/data/building-graph.json` (coords in original **4000×3910** map pixels). Details: [docs/map-graph.md](./docs/map-graph.md).
+## Data
+
+- Schema: `src/types/graph.ts`
+- Graph: `src/data/building-graph.json` (coords in **4000×3910** map pixels)
+- Notes: [docs/map-graph.md](./docs/map-graph.md)
 
 ## Scripts
 

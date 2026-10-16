@@ -124,11 +124,11 @@ export function RouteMap({ floor, pathNodes, focusIndex }: RouteMapProps) {
             <polyline
               points={polyline.join(' ')}
               fill="none"
-              stroke="#dc2626"
-              strokeWidth={6 / scale}
+              stroke="#b91c1c"
+              strokeWidth={7 / scale}
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeOpacity={0.92}
+              strokeOpacity={0.95}
             />
           )}
           {start && (
@@ -163,8 +163,11 @@ export function RouteMap({ floor, pathNodes, focusIndex }: RouteMapProps) {
           )}
         </svg>
       </div>
-      <div className="pointer-events-none absolute bottom-2 left-2 rounded bg-black/55 px-2 py-1 text-xs text-white">
-        {floorMeta.label} · scroll to zoom · drag to pan
+      <div className="pointer-events-none absolute top-3 left-3 rounded-md bg-black/60 px-2.5 py-1 text-xs font-medium tracking-wide text-white">
+        {floorMeta.label} floor
+      </div>
+      <div className="pointer-events-none absolute bottom-2 left-2 rounded bg-black/50 px-2 py-1 text-xs text-white/90">
+        Scroll to zoom · drag to pan
       </div>
     </div>
   );

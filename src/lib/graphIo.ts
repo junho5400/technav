@@ -1,6 +1,5 @@
 import type { BuildingGraph } from '../types/graph';
 import { FLOOR_DEFS, ORIGINAL_MAP_HEIGHT, ORIGINAL_MAP_WIDTH } from '../types/graph';
-import buildingGraph from '../data/building-graph.json';
 
 export function emptyGraph(): BuildingGraph {
   return {
@@ -17,6 +16,9 @@ export function emptyGraph(): BuildingGraph {
   };
 }
 
-export function loadBuildingGraph(): BuildingGraph {
-  return structuredClone(buildingGraph) as BuildingGraph;
+/** Load graph from public/data (keeps the JS bundle small). */
+export async function fetchBuildingGraph(): Promise<BuildingGraph> {
+  const res = await fetch('/data/building-graph.json');
+  if (!res.ok) throw new Error(`Failed to load building graph (${res.status})`);
+  return (await res.json()) as BuildingGraph;
 }
