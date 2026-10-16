@@ -2420,14 +2420,6 @@
       "label": "MG01A"
     },
     {
-      "id": "corr-g-mg01a",
-      "type": "corridor",
-      "floor": "ground",
-      "x": 3142,
-      "y": 1688,
-      "label": "MG01A"
-    },
-    {
       "id": "corr-g-mg01d",
       "type": "corridor",
       "floor": "ground",
@@ -2981,15 +2973,6 @@
       "y": 362,
       "label": "Stairs",
       "connectorGroup": "shaft-1-4"
-    },
-    {
-      "id": "st-31-f",
-      "type": "stair",
-      "floor": "first",
-      "x": 3884,
-      "y": 2796,
-      "label": "Stairs 31",
-      "connectorGroup": "stair-31"
     },
     {
       "id": "st-auto-23-f",
