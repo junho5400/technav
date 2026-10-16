@@ -3,8 +3,8 @@
  *
  * Coordinates (x, y) are in **original map-pixel space** aligned to the
  * official McCormick Tech floor-plan PNGs (~4000 × 3910). Display images
- * in `public/floor-plans/` may be downscaled; the editor maps clicks back
- * to this coordinate space.
+ * in `public/floor-plans/` may be downscaled; the navigator scales paths
+ * from this coordinate space onto the displayed image.
  */
 
 export const ORIGINAL_MAP_WIDTH = 4000;

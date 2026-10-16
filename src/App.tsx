@@ -1,5 +1,5 @@
-import { MapEditor } from './components/map/MapEditor';
+import { Navigator } from './components/navigator/Navigator';
 
-const App = () => <MapEditor />;
+const App = () => <Navigator />;
 
 export default App;
