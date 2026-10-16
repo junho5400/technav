@@ -12,8 +12,8 @@ import { RouteMap } from './RouteMap';
 export function Navigator() {
   const [graph, setGraph] = useState<BuildingGraph | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
-  const [fromQuery, setFromQuery] = useState('Main Entrance');
-  const [toQuery, setToQuery] = useState('AG76');
+  const [fromQuery, setFromQuery] = useState('Computer Lab');
+  const [toQuery, setToQuery] = useState('MG76');
   const [fromId, setFromId] = useState<string | null>(null);
   const [toId, setToId] = useState<string | null>(null);
   const [stepIndex, setStepIndex] = useState(0);
@@ -89,7 +89,16 @@ export function Navigator() {
   };
 
   useEffect(() => {
-    if (graph) runRoute(graph, 'Main Entrance', 'AG76');
+    if (!graph) return;
+    const dest = listDestinations(graph);
+    const pick = (...labels: string[]) =>
+      labels.find((l) => dest.some((d) => d.label === l));
+    // Prefer same-corridor-component demos that stay on wide halls.
+    const from = pick('Computer Lab', 'BG10', 'LG71', 'AG10') ?? dest[0]?.label;
+    const to =
+      pick('MG76', 'MG11', 'LG71') ??
+      dest.find((d) => d.label !== from)?.label;
+    if (from && to) runRoute(graph, from, to);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- once graph loads
   }, [graph]);
 
@@ -135,12 +144,25 @@ export function Navigator() {
     (d) => d.type === 'room' && d.floor === 'first',
   ).length;
 
-  const examples = [
-    ['Main Entrance', 'AG76'],
-    ['Main Entrance', 'NG43'],
-    ['Main Entrance', 'MG76'],
-    ['AG76', 'A136'],
-  ] as const;
+  const examples = useMemo(() => {
+    const labels = new Set(
+      destinations.filter((d) => d.type === 'room').map((d) => d.label ?? ''),
+    );
+    const candidates: [string, string][] = [
+      ['Computer Lab', 'MG76'],
+      ['BG10', 'MG11'],
+      ['LG71', 'MG76'],
+      ['AG10', 'BG10'],
+      ['Loading Dock', 'HG09'],
+    ];
+    const found = candidates.filter(([a, b]) => labels.has(a) && labels.has(b));
+    if (found.length) return found;
+    const rooms = destinations.filter((d) => d.type === 'room').slice(0, 4);
+    if (rooms.length >= 2) {
+      return [[rooms[0].label!, rooms[1].label!]] as [string, string][];
+    }
+    return [] as [string, string][];
+  }, [destinations]);
 
   if (loadError) {
     return (
@@ -193,7 +215,7 @@ export function Navigator() {
                 className="rounded-lg border border-stone-300 bg-white px-3 py-2 shadow-sm outline-none focus:border-stone-500"
                 value={fromQuery}
                 onChange={(e) => setFromQuery(e.target.value)}
-                placeholder="Main Entrance"
+                placeholder="e.g. AG76"
                 autoComplete="off"
               />
             </label>

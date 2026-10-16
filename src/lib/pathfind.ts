@@ -283,7 +283,7 @@ export function buildRouteSteps(path: PathResult): RouteStep[] {
   return steps;
 }
 
-/** Destinations users can pick: rooms + named entrances. */
+/** Destinations users can pick: labeled rooms / places (and labeled stairs). */
 export function listDestinations(graph: BuildingGraph): GraphNode[] {
   return graph.nodes
     .filter(
